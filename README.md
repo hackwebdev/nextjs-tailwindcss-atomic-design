@@ -1,51 +1,13 @@
-NextJS app with TailwindCSS
+NextJS with TailwindCSS - Atomic Design Structure
 
 ```
+Install NextJS
 $ npx create-next-app .
 
-delete the styles folder
+Install TailwindCSS
+$ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+$ npx tailwindcss init -p
 
-have a folder for my component the style and the component file will be inside of that folder
-
-- the principle of locality
-- everything the components needs without jumping all over the directory structure
-
-Separate the production distribution essentially from the source
-
-- create src/
-- mode pages/ inside the src/
-
-api/ - is where you put all the server side stuff in next js
-_app.js - wraps all the pages automatically
-
-index.js - to LandingPage component
-
-create a page inside of pages for my homepage and i may have other landing pages too
-and its just a matter of reference importing referencing that so you could switch around
-exactly which one is your homepage
-
-_app.js - a high order component
-No single file for components because you cant put extra artifacts or assets
-replace _app.js into _app folder
-move _app.js inside _app/
-rename _app.js to index.jsx
-remember if you require a folder in javascript it will automatically  look for index.js or index.jsx
-rename the component to App
-then from
-    function App({ Component, pageProps }) { } into
-    export default function App({ Component, pageProps }) { }
-
-the LandingPage will get wrap inside the the special App component
-we have the homepage at the route of index
-
-Layout component
-src/ui/ - atomic elements the smallest type of component that you can have in your react app ex. button, textbox, paper etc.
-        - if your talking a single component
-src/features/ - are when you put a bunch of these ui elements together to create a single feature then you take a feature and you put it on a page
-              - if it is a group of components
-
-src/features/index.js
-edf - export default function
 
 nextjs relative path
 jsconfig.json
@@ -59,39 +21,41 @@ jsconfig.json
         }
     }
 
-build your own components it seems complex
-- you build a component that it does only what you want it to do
 
-page concept
-a good ui element
+Delete the styles folder
 
-Note: go to settings / label / workbench : short
+create a src/ and move pages/ inside the src/
 
-when building a component
-- put the actual code wherever your working and get it to work and then extract it out into a component
+replace _app.js with _app/index.jsx
+ - it wraps all the pages automatically
+ - start using this format:
+    - shortcut is rfc
+    export default function App({ Component, pageProps }) { }
+ - import './globals.css'
+_app/global.css - paste inside the tailwind directives
 
-what is a page component - a page is a grouping of a concept. concept means a page has a url, it has a route that you can go to and when you go to that route you get the component that matches the route. a page also has a title. so that when your in your browser when you go to different pages each of those different pages on the tab will have a different title. this is realy important for SEO
+pages/index.js
+ - LandingPage component
+    export default function LandingPage() { } - wrapped with Layout from App component
 
-page component is like a header component
-- has the head with title tag inside
+src/ui/ - can’t be broken down any further without ceasing to be functional
+ - component folder structure
+    - index.js or index.jsx
+    - styles.module.css
+ - examples
+    - headings  - h1/h2/h3
+    - link
+    - page - is like a header component
 
-Apply Styling
-$ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
-$ npx tailwindcss init -p
+src/features/ - are relatively simple groups of UI elements functioning together as a unit
+ - examples
+    - layout component
+    - src/features/layout/index.jsx
 
-include the tailwindcss in _app/index.js
-    import './global.css'
-create _app/globals.css
-    paste inside the tailwind directives
+Note: Restart server to apply changes
 
-Restart the server after all the changes
-
-Create react component for all of the element that way theres a component for behavior
-h1,h2,h3 tags for hedings only the rest is unimportant
-    ui/headings/h1/index.js
-    ui/headings/h1/styles.module.css
-
-menu links with router:
+Menu links with router:
+- From ui/link used inside features/layout
 
     import NextLink from 'next/link'
     import { useRouter } from 'next/router'
@@ -108,10 +72,11 @@ menu links with router:
         )
     }
 
+How to do parameters in NextJS routes:
+- use of query selector on next/router
+
 pages/courses/[slug]/index.js
 - square brackets denotes to nextjs that this is a parameter
-
-how to do parameters in nextjs routes:
 
     import { useRouter } from 'next/router'
 
@@ -135,3 +100,20 @@ how to do parameters in nextjs routes:
     }
 
 ```
+
+Note:
+
+The principle of locality
+
+- Everything the components needs without jumping all over the directory structure
+- Separate the production distribution essentially from the source
+
+api/ - is where you put all the server side stuff in next js
+
+When building a component
+
+- put the actual code wherever your working and get it to work and then extract it out into a component
+
+Page component - a page is a grouping of a concept. Concept means a page has a url, it has a route that you can go to and when you go to that route you get the component that matches the route. a page also has a title. so that when your in your browser when you go to different pages each of those different pages on the tab will have a different title. this is realy important for SEO. It has the head with title tag inside.
+
+Note: Fix tab title to display parent folder: go to settings / label / workbench : short
