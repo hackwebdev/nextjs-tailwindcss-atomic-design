@@ -1,0 +1,6 @@
+.h1 {
+  @apply text-gray-700;
+  @apply text-3xl;
+  @apply md:text-4xl;
+  @apply xl:text-6xl;
+}

@@ -1,0 +1,4 @@
+.active {
+  @apply text-red-500;
+  @apply underline;
+}

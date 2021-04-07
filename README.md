@@ -1,34 +1,137 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+NextJS app with TailwindCSS
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
 ```
+$ npx create-next-app .
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+delete the styles folder
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+have a folder for my component the style and the component file will be inside of that folder
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- the principle of locality
+- everything the components needs without jumping all over the directory structure
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Separate the production distribution essentially from the source
 
-## Learn More
+- create src/
+- mode pages/ inside the src/
 
-To learn more about Next.js, take a look at the following resources:
+api/ - is where you put all the server side stuff in next js
+_app.js - wraps all the pages automatically
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+index.js - to LandingPage component
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+create a page inside of pages for my homepage and i may have other landing pages too
+and its just a matter of reference importing referencing that so you could switch around
+exactly which one is your homepage
 
-## Deploy on Vercel
+_app.js - a high order component
+No single file for components because you cant put extra artifacts or assets
+replace _app.js into _app folder
+move _app.js inside _app/
+rename _app.js to index.jsx
+remember if you require a folder in javascript it will automatically  look for index.js or index.jsx
+rename the component to App
+then from
+    function App({ Component, pageProps }) { } into
+    export default function App({ Component, pageProps }) { }
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+the LandingPage will get wrap inside the the special App component
+we have the homepage at the route of index
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Layout component
+src/ui/ - atomic elements the smallest type of component that you can have in your react app ex. button, textbox, paper etc.
+        - if your talking a single component
+src/features/ - are when you put a bunch of these ui elements together to create a single feature then you take a feature and you put it on a page
+              - if it is a group of components
+
+src/features/index.js
+edf - export default function
+
+nextjs relative path
+jsconfig.json
+    {
+    "compilerOptions": {
+            "baseUrl": "./src",
+            "paths": {
+            "@/*": ["/*"],
+            "@/api/*": ["/api/*"]
+            }
+        }
+    }
+
+build your own components it seems complex
+- you build a component that it does only what you want it to do
+
+page concept
+a good ui element
+
+Note: go to settings / label / workbench : short
+
+when building a component
+- put the actual code wherever your working and get it to work and then extract it out into a component
+
+what is a page component - a page is a grouping of a concept. concept means a page has a url, it has a route that you can go to and when you go to that route you get the component that matches the route. a page also has a title. so that when your in your browser when you go to different pages each of those different pages on the tab will have a different title. this is realy important for SEO
+
+page component is like a header component
+- has the head with title tag inside
+
+Apply Styling
+$ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+$ npx tailwindcss init -p
+
+include the tailwindcss in _app/index.js
+    import './global.css'
+create _app/globals.css
+    paste inside the tailwind directives
+
+Restart the server after all the changes
+
+Create react component for all of the element that way theres a component for behavior
+h1,h2,h3 tags for hedings only the rest is unimportant
+    ui/headings/h1/index.js
+    ui/headings/h1/styles.module.css
+
+menu links with router:
+
+    import NextLink from 'next/link'
+    import { useRouter } from 'next/router'
+    import styles from './styles.module.css'
+
+    export default function Link({ children, href }) {
+    const router = useRouter()
+    console.log(router)
+
+    return (
+            <NextLink href={href}>
+                <a className={router.asPath === href ? styles.active : ''}>{children}</a>
+            </NextLink>
+        )
+    }
+
+pages/courses/[slug]/index.js
+- square brackets denotes to nextjs that this is a parameter
+
+how to do parameters in nextjs routes:
+
+    import { useRouter } from 'next/router'
+
+    import H1 from 'ui/headings/h1'
+    import Page from 'ui/page'
+
+    export default function CourseDetailsPage() {
+    const router = useRouter()
+    console.log(router.query.slug)
+
+    return (
+            <div>
+                <Page
+                    title={router.query.slug}
+                    description='this is my nextjs description'
+                >
+                    <H1>{router.query.slug}</H1>
+                </Page>
+            </div>
+        )
+    }
+
+```
